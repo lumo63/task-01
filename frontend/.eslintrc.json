@@ -5,7 +5,8 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "standard-with-typescript"
+        "standard-with-typescript",
+        "prettier"
     ],
     "overrides": [
     ],
@@ -16,8 +17,11 @@
 
     },
     "plugins": [
-        "react"
+        "react",
+        "prettier"
     ],
     "rules": {
+        "react/react-in-jsx-scope": 0,
+        "prettier/prettier": ["error"]
     }
 }
