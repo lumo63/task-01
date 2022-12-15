@@ -13,6 +13,7 @@ export const TransactionsTableLayout = ({
   transactions,
   isLoading,
   children,
+  onTransactionDelete,
 }: TransactionTableProps): JSX.Element | null => (
   <>
     <TableContainer component={Paper}>
@@ -22,7 +23,7 @@ export const TransactionsTableLayout = ({
         ) : (
           <>
             <TransactionTableHead />
-            <TransactionTableBody transactions={transactions} />
+            <TransactionTableBody transactions={transactions} onTransactionDelete={onTransactionDelete} />
             {children}
           </>
         )}

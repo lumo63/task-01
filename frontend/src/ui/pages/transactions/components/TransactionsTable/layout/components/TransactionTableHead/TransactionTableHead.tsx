@@ -11,6 +11,7 @@ export const TransactionTableHead = (): JSX.Element => {
         <TableCell align="right">Address</TableCell>
         <TableCell align="right">Date</TableCell>
         <TableCell align="right">Description</TableCell>
+        <TableCell align="center">Action</TableCell>
       </TableRow>
     </TableHead>
   );

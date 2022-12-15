@@ -45,7 +45,6 @@ export const UserCanFillTheFormAndSubmit: StoryType = {
         description: "Irure ut cillum mollit proident voluptate veniam.",
       })
     );
-    await canvas.findByTestId("transactions-alert-success");
   },
 };
 
@@ -129,6 +128,19 @@ export const UserSeeSpacesAreValidated: StoryType = {
     userEvent.click(submitButton);
 
     await waitFor(() => expect(context.args.onFormSubmit).not.toHaveBeenCalled());
+  },
+};
+
+export const UserCanSeeSubmitSuccess: StoryType = {
+  args: {
+    onFormSubmit: jest.fn(async () => true),
+  },
+  play: async (context) => {
+    await UserCanFillTheFormAndSubmit.play?.(context);
+
+    const { findByTestId } = within(context.canvasElement);
+
+    await findByTestId("transactions-alert-success");
   },
 };
 

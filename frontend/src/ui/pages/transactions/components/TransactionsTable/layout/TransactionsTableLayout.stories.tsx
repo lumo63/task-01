@@ -41,6 +41,7 @@ export const TransactionsAreDisplayedInATableRow: StoryType = {
       "185 Berkeley Place, Brady, West Virginia, 7409",
       "15.12.2021, 01:05:42",
       "Amet amet qui proident sint esse adipisicing amet.",
+      "Delete",
     ];
 
     const canvas = within(context.canvasElement);

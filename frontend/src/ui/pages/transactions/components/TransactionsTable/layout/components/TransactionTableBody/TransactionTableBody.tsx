@@ -1,10 +1,11 @@
 import { Transaction } from "types";
-import { TableBody, TableCell, TableRow } from "@mui/material";
+import { Button, TableBody, TableCell, TableRow } from "@mui/material";
 
 export interface TransactionTableBodyProps {
   transactions?: Transaction[];
+  onTransactionDelete: (id: number) => void;
 }
-export const TransactionTableBody = ({ transactions }: TransactionTableBodyProps): JSX.Element => {
+export const TransactionTableBody = ({ transactions, onTransactionDelete }: TransactionTableBodyProps): JSX.Element => {
   return (
     <TableBody>
       {transactions?.length ? (
@@ -17,6 +18,9 @@ export const TransactionTableBody = ({ transactions }: TransactionTableBodyProps
             <TableCell align="right">{row.address}</TableCell>
             <TableCell align="right">{new Date(row.date).toLocaleString("pl-PL")}</TableCell>
             <TableCell align="right">{row.description}</TableCell>
+            <TableCell align="right">
+              <Button onClick={() => onTransactionDelete(row.id)}>Delete</Button>
+            </TableCell>
           </TableRow>
         ))
       ) : (

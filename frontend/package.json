@@ -19,13 +19,14 @@
     "zod": "^3.20.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npx cross-env PORT=3001 react-scripts start -p",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "test-storybook": "test-storybook"
+    "test-storybook": "test-storybook",
+    "test-storybook-locally": "npx concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npx http-server storybook-static --port 6006 --silent\"  \"npx wait-on tcp:6006 && npm run test-storybook\""
   },
   "eslintConfig": {
     "extends": [

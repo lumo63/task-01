@@ -6,6 +6,10 @@ import { Balance } from "ui/pages/transactions/components/Balance/Balance";
 import { TransactionsTableLayout } from "./components/TransactionsTable/layout/TransactionsTableLayout";
 import { useState } from "react";
 import { useTransactions } from "api/hooks/useTransactions";
+import { usePostTransaction } from "api/hooks/usePostTransaction";
+import { Transaction } from "types";
+import { TransactionSchema } from "./components/TransactionForm/schema";
+import { common } from "common/common";
 
 type onPageChangeHandler = TablePaginationProps["onPageChange"];
 type onRowsPerPageChangeHandler = TablePaginationProps["onRowsPerPageChange"];
@@ -16,15 +20,30 @@ export const TransactionsPage = () => {
   const [filterValue, setFilterValue] = useState("");
 
   const { transactions, isLoading, balance } = useTransactions(page, rowsPerPage, filterValue);
-
+  const { trigger } = usePostTransaction();
   const onPageChangeHandler: onPageChangeHandler = (_, pageNumber) => setPage(pageNumber);
   const onRowsPerPageChangeHandler: onRowsPerPageChangeHandler = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const onFormSubmit = async () => {
-    return true;
+  const onFormSubmit = async (data: TransactionSchema) => {
+    const transactionToPost: Transaction = {
+      id: common.getRandomNumber(),
+      amount: Number(data.amount),
+      beneficiary: "Unknown",
+      account: data.account,
+      address: data.address,
+      date: new Date().toISOString(),
+      description: data.description,
+    };
+    const res = await trigger(transactionToPost);
+
+    return res?.statusText === "ok";
+  };
+
+  const onTransactionDelete = (key: number) => {
+    // delete code...
   };
 
   return (
@@ -48,14 +67,18 @@ export const TransactionsPage = () => {
             </Grid>
           </Grid>
           <Grid marginBottom={1} paddingLeft={1} paddingRight={1} item xs={12}>
-            <TransactionsTableLayout transactions={transactions} isLoading={isLoading}>
+            <TransactionsTableLayout
+              transactions={transactions}
+              isLoading={isLoading}
+              onTransactionDelete={onTransactionDelete}
+            >
               <TableFooter>
                 <TableRow>
                   <TablePagination
                     rowsPerPageOptions={[20, 40]}
                     rowsPerPage={rowsPerPage}
                     onRowsPerPageChange={onRowsPerPageChangeHandler}
-                    count={transactions?.length ?? 0}
+                    count={-1}
                     page={page}
                     onPageChange={onPageChangeHandler}
                   />
