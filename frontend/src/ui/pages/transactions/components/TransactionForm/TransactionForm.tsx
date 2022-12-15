@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button, Collapse } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { TransactionFormTextField } from "ui/components/FormTextField/FormTextField";
 import { Styled } from "./TransactionForm.styles";
@@ -36,7 +36,10 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
 
   return (
     <Styled.Container>
-      <Styled.FormTitle variant={"h5"}>Add a new transaction</Styled.FormTitle>
+      <Typography variant={"h5"}>Add a new transaction</Typography>
+      <Styled.AlertWrapper in={isAlertVisible}>
+        <TransactionAlert alertType={submitState} />
+      </Styled.AlertWrapper>
       <Styled.Form>
         <FormProvider {...methods}>
           <TransactionFormTextField type={"number"} name={"amount"} label={"Amount"} />
@@ -51,9 +54,6 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
           </Styled.FormButtonsContainer>
         </FormProvider>
       </Styled.Form>
-      <Collapse in={isAlertVisible}>
-        <TransactionAlert alertType={submitState} />
-      </Collapse>
     </Styled.Container>
   );
 };

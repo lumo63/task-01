@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Paper, Typography } from "@mui/material";
+import { Collapse, Paper } from "@mui/material";
 
 const Form = styled.form`
   display: flex;
@@ -24,15 +24,18 @@ const FormButtonsContainer = styled.div`
   }
 `;
 
-const FormTitle = styled(Typography)``;
-
 const Container = styled(Paper)`
   padding: 16px;
+`;
+
+const AlertWrapper = styled(Collapse)`
+  margin-top: 16px;
+  margin-bottom: 16px;
 `;
 
 export const Styled = {
   Form,
   FormButtonsContainer,
-  FormTitle,
   Container,
+  AlertWrapper,
 };
