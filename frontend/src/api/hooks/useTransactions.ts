@@ -12,8 +12,11 @@ export const useTransactions = (page: number, limit: number, filterValue: string
     fetcher
   );
 
+  const balance = (data ?? []).reduce((acc, transaction) => acc + transaction.amount, 0);
+
   return {
     transactions: data,
     isLoading,
+    balance,
   };
 };
