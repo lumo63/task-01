@@ -29,6 +29,7 @@
         "no-relative-import-paths/no-relative-import-paths": [
             "warn",
             { "allowSameFolder": true, "rootDir": "src"}
-        ]
+        ],
+        "@typescript-eslint/explicit-function-return-type": 0
     }
 }

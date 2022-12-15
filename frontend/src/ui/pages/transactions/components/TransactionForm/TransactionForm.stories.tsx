@@ -99,3 +99,31 @@ export const UserCanSeeThatAllFieldsAreRequired: StoryType = {
     await waitFor(() => expect(context.args.onFormSubmit).not.toHaveBeenCalled());
   },
 };
+
+export const UserSeeSpacesAreValidated: StoryType = {
+  play: async (context) => {
+    const canvas = within(context.canvasElement);
+
+    const amountFormField = await canvas.findByLabelText("Amount");
+
+    userEvent.type(amountFormField, " ");
+
+    const accountNumberFormField = await canvas.findByLabelText("Account number");
+
+    userEvent.type(accountNumberFormField, " ");
+
+    const addressFormField = await canvas.findByLabelText("Address");
+
+    userEvent.type(addressFormField, " ");
+
+    const descriptionFormField = await canvas.findByLabelText("Description");
+
+    userEvent.type(descriptionFormField, " ");
+
+    const submitButton = await canvas.findByText("Submit");
+
+    userEvent.click(submitButton);
+
+    await waitFor(() => expect(context.args.onFormSubmit).not.toHaveBeenCalled());
+  },
+};
