@@ -9,6 +9,7 @@ export default {
   component: TransactionsTable,
   args: {
     isLoading: false,
+    transactions: [],
   },
 };
 
@@ -27,7 +28,7 @@ export const Default: StoryType = {
   },
 };
 
-export const OneRow: StoryType = {
+export const TransactionsAreDisplayedInATableRow: StoryType = {
   args: {
     transactions: [transactionsTableMocks.transactions[0]],
   },
@@ -38,7 +39,7 @@ export const OneRow: StoryType = {
       "Callie Nieves",
       "PL10104092290785174000000000",
       "185 Berkeley Place, Brady, West Virginia, 7409",
-      "15.12.2015 01:05:42",
+      "15.12.2021, 01:05:42",
       "Amet amet qui proident sint esse adipisicing amet.",
     ];
 
