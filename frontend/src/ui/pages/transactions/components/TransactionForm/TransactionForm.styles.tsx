@@ -19,7 +19,7 @@ const FormButtonsContainer = styled.div`
 
   margin-top: 12px;
 
-  button:nth-child(1) {
+  button:nth-of-type(1) {
     margin-right: 4px;
   }
 `;

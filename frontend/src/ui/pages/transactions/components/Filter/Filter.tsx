@@ -1,4 +1,4 @@
-import { debounce, TextField, TextFieldProps } from "@mui/material";
+import { debounce, Paper, TextField, TextFieldProps } from "@mui/material";
 
 interface FilterProps {
   onFilterChange: (filterValue: string) => void;
@@ -10,6 +10,14 @@ export const Filter = ({ onFilterChange }: FilterProps): JSX.Element => {
   }, 500);
 
   return (
-    <TextField onChange={onChangeHandler} id="filter-input" label="Filter by beneficiary field" variant="standard" />
+    <Paper sx={{ display: "flex", padding: "1rem", flexGrow: 1 }}>
+      <TextField
+        onChange={onChangeHandler}
+        id="filter-input"
+        label="Filter by beneficiary field"
+        variant="standard"
+        sx={{ flexGrow: 1 }}
+      />
+    </Paper>
   );
 };

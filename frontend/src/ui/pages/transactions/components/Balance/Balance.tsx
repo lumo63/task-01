@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 
 type BalanceColor = "green" | "gray" | "red";
 
@@ -19,8 +19,10 @@ export const Balance = ({ balance }: BalanceProps): JSX.Element => {
 
   const balanceColor = getBalanceColor();
   return (
-    <Typography data-testid={`transactions-balance-${balanceColor}`} color={balanceColor} variant={"h6"}>
-      Your balance is: {balance}
-    </Typography>
+    <Paper sx={{ display: "flex", padding: "1rem" }}>
+      <Typography data-testid={`transactions-balance-${balanceColor}`} color={balanceColor} variant={"h6"}>
+        Your balance is: {balance}
+      </Typography>
+    </Paper>
   );
 };
