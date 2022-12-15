@@ -1,8 +1,20 @@
 import { TransactionsPage } from "./TransactionsPage";
-import { ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStoryObj } from "@storybook/react";
 
+type StoryType = ComponentStoryObj<typeof TransactionsPage>;
 export default {
   component: TransactionsPage,
-} as ComponentMeta<any>;
+  args: {
+    balance: 1421,
+  },
+} as ComponentMeta<typeof TransactionsPage>;
 
-export const Default = {};
+export const TransactionsDidLoad: StoryType = {
+  args: {},
+};
+
+export const TransactionsLoading: StoryType = {
+  args: {
+    balance: 0,
+  },
+};
