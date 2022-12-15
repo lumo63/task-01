@@ -20,7 +20,7 @@ export const Balance = ({ balance }: BalanceProps): JSX.Element => {
   const balanceColor = getBalanceColor();
   return (
     <Paper sx={{ display: "flex", padding: "1rem" }}>
-      <Typography data-testid={`transactions-balance-${balanceColor}`} color={balanceColor} variant={"h6"}>
+      <Typography noWrap data-testid={`transactions-balance-${balanceColor}`} color={balanceColor} variant={"h6"}>
         Your balance is: {balance}
       </Typography>
     </Paper>

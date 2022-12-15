@@ -8,16 +8,16 @@ import { TransactionsTable } from "./components/TransactionsTable/TransactionsTa
 export const TransactionsPage = () => {
   return (
     <Box sx={{ background: "#E7EBF0" }}>
-      <Grid spacing={2} container>
-        <Grid item xs={12}>
+      <Grid container>
+        <Grid marginBottom={1} item xs={12}>
           <Navbar />
         </Grid>
-        <Grid marginLeft={0.5} marginRight={2} spacing={2} item container>
-          <Grid spacing={2} direction={"row-reverse"} container item xs={12}>
+        <Grid rowSpacing={2} item container>
+          <Grid paddingLeft={1} paddingRight={1} spacing={1} direction={"row-reverse"} container item xs={12}>
             <Grid item xs={12} md={8}>
               <TransactionForm onFormSubmit={async () => true} />
             </Grid>
-            <Grid spacing={1} container item xs={12} md={4}>
+            <Grid spacing={1} container item justifyContent={"space-between"} xs={12} md={4}>
               <Grid item xs={12}>
                 <Balance balance={1000} />
               </Grid>
@@ -26,7 +26,7 @@ export const TransactionsPage = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
+          <Grid marginBottom={1} paddingLeft={1} paddingRight={1} item xs={12}>
             <TransactionsTable isLoading={false} transactions={[]} />
           </Grid>
         </Grid>

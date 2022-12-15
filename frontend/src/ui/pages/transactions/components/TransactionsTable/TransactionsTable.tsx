@@ -66,7 +66,7 @@ export const TransactionsTable = ({ transactions }: TransactionTableProps): JSX.
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label={"transactions table"}>
+        <Table sx={{ minWidth: 320 }} aria-label={"transactions table"}>
           <Head />
           <Body transactions={transactions} />
           <TableFooter>
