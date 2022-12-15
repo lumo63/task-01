@@ -1,6 +1,6 @@
 import { debounce, Paper, TextField, TextFieldProps } from "@mui/material";
 
-interface FilterProps {
+export interface FilterProps {
   onFilterChange: (filterValue: string) => void;
 }
 

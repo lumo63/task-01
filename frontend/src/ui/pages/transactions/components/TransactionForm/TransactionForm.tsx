@@ -9,7 +9,7 @@ import { useState } from "react";
 import { TransactionAlert } from "./components/TransactionAlert";
 import { SubmitState } from "types";
 
-interface TransactionFormProps {
+export interface TransactionFormProps {
   onFormSubmit: (formData: TransactionSchema) => Promise<boolean>;
 }
 export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Element => {

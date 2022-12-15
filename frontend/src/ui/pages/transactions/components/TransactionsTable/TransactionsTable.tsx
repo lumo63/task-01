@@ -50,7 +50,7 @@ const Body = ({ transactions }: BodyProps): JSX.Element => {
   );
 };
 
-interface TransactionTableProps extends BodyProps {
+export interface TransactionTableProps extends BodyProps {
   isLoading: boolean;
 }
 export const TransactionsTable = ({ transactions }: TransactionTableProps): JSX.Element | null => {

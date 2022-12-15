@@ -2,7 +2,7 @@ import { Paper, Typography } from "@mui/material";
 
 type BalanceColor = "green" | "gray" | "red";
 
-interface BalanceProps {
+export interface BalanceProps {
   balance: number;
 }
 
