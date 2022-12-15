@@ -26,7 +26,7 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "test-storybook": "test-storybook",
-    "test-storybook-locally": "npx concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npx http-server storybook-static --port 6006 --silent\"  \"npx wait-on tcp:6006 && npm run test-storybook\""
+    "test-storybook-locally": "npx concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npx start-storybook --ci --port 6006 \"  \"npx wait-on tcp:6006 && npm run test-storybook\""
   },
   "eslintConfig": {
     "extends": [
