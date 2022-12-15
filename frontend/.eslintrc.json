@@ -18,11 +18,17 @@
     },
     "plugins": [
         "react",
+        "no-relative-import-paths",
         "prettier"
     ],
     "rules": {
         "react/react-in-jsx-scope": 0,
-        "prettier/prettier": ["error"],
-        "@typescript-eslint/consistent-type-assertions": 0
+        "prettier/prettier": ["warn"],
+        "@typescript-eslint/consistent-type-assertions": 0,
+        "@typescript-eslint/strict-boolean-expressions": 0,
+        "no-relative-import-paths/no-relative-import-paths": [
+            "warn",
+            { "allowSameFolder": true, "rootDir": "src"}
+        ]
     }
 }
