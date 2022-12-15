@@ -3,13 +3,13 @@ import { PropsWithChildren } from "react";
 import {
   TransactionTableBody,
   TransactionTableBodyProps,
-} from "ui/pages/transactions/components/TransactionsTable/layout/components/TransactionTableBody/TransactionTableBody";
+} from "ui/pages/transactions/components/TransactionsTable/components/TransactionTableBody/TransactionTableBody";
 import { TransactionTableHead } from "./components/TransactionTableHead/TransactionTableHead";
 
 export interface TransactionTableProps extends PropsWithChildren<TransactionTableBodyProps> {
   isLoading?: boolean;
 }
-export const TransactionsTableLayout = ({
+export const TransactionsTable = ({
   transactions,
   isLoading,
   children,

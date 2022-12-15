@@ -1,12 +1,12 @@
-import { TransactionsTableLayout } from "./TransactionsTableLayout";
+import { TransactionsTable } from "./TransactionsTable";
 import { ComponentStoryObj } from "@storybook/react";
 import { transactionsTableMocks } from "ui/pages/transactions/components/TransactionsTable/TransactionsTable.mocks";
 import { within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 
-type StoryType = ComponentStoryObj<typeof TransactionsTableLayout>;
+type StoryType = ComponentStoryObj<typeof TransactionsTable>;
 export default {
-  component: TransactionsTableLayout,
+  component: TransactionsTable,
   args: {
     isLoading: false,
     transactions: [],

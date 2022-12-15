@@ -3,7 +3,7 @@ import { Filter } from "ui/pages/transactions/components/Filter/Filter";
 import { TransactionForm } from "ui/pages/transactions/components/TransactionForm/TransactionForm";
 import { Navbar } from "ui/pages/transactions/components/Navbar/Navbar";
 import { Balance } from "ui/pages/transactions/components/Balance/Balance";
-import { TransactionsTableLayout } from "./components/TransactionsTable/layout/TransactionsTableLayout";
+import { TransactionsTable } from "./components/TransactionsTable/TransactionsTable";
 import { useState } from "react";
 import { useTransactions } from "api/hooks/useTransactions";
 import { usePostTransaction } from "api/hooks/usePostTransaction";
@@ -39,11 +39,16 @@ export const TransactionsPage = () => {
     };
     const res = await trigger(transactionToPost);
 
-    return res?.statusText === "ok";
+    return res?.statusText === "Created";
   };
 
   const onTransactionDelete = (key: number) => {
     // delete code...
+  };
+
+  const onFilterChangeHandler = (filterValue: string) => {
+    setFilterValue(filterValue);
+    setPage(0);
   };
 
   return (
@@ -62,12 +67,12 @@ export const TransactionsPage = () => {
                 <Balance balance={balance} />
               </Grid>
               <Grid display={"flex"} alignItems={"flex-end"} item xs={12}>
-                <Filter onFilterChange={setFilterValue} />
+                <Filter onFilterChange={onFilterChangeHandler} />
               </Grid>
             </Grid>
           </Grid>
           <Grid marginBottom={1} paddingLeft={1} paddingRight={1} item xs={12}>
-            <TransactionsTableLayout
+            <TransactionsTable
               transactions={transactions}
               isLoading={isLoading}
               onTransactionDelete={onTransactionDelete}
@@ -84,7 +89,7 @@ export const TransactionsPage = () => {
                   />
                 </TableRow>
               </TableFooter>
-            </TransactionsTableLayout>
+            </TransactionsTable>
           </Grid>
         </Grid>
       </Grid>

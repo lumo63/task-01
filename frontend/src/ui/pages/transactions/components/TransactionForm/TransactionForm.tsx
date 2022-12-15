@@ -29,6 +29,10 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
     setSubmitState(isFormSubmitSuccess ? "success" : "error");
     setIsAlertVisible(true);
 
+    if (isFormSubmitSuccess) {
+      reset();
+    }
+
     setTimeout(() => {
       setIsAlertVisible(false);
     }, 5000);
