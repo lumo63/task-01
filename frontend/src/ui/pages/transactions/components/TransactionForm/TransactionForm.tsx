@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button } from "@mui/material";
+import { Button, Collapse } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { TransactionFormTextField } from "ui/components/FormTextField/FormTextField";
 import { Styled } from "./TransactionForm.styles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addTransactionSchema, TransactionSchema } from "./schema";
+import { useState } from "react";
+import { TransactionAlert } from "./components/TransactionAlert";
+import { SubmitState } from "types";
 
 interface TransactionFormProps {
-  onFormSubmit: (formData: TransactionSchema) => void;
+  onFormSubmit: (formData: TransactionSchema) => Promise<boolean>;
 }
 export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Element => {
+  const [submitState, setSubmitState] = useState<SubmitState>("success");
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+
   const methods = useForm<TransactionSchema>({
     resolver: zodResolver(addTransactionSchema),
     mode: "onBlur",
@@ -17,9 +23,15 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
 
   const { handleSubmit, reset } = methods;
 
-  const onSubmitHandler = (data: TransactionSchema): void => {
-    onFormSubmit(data);
-    console.log(data);
+  const onSubmitHandler = async (data: TransactionSchema) => {
+    const isFormSubmitSuccess = await onFormSubmit(data);
+
+    setSubmitState(isFormSubmitSuccess ? "success" : "error");
+    setIsAlertVisible(true);
+
+    setTimeout(() => {
+      setIsAlertVisible(false);
+    }, 5000);
   };
 
   return (
@@ -39,6 +51,9 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
           </Styled.FormButtonsContainer>
         </FormProvider>
       </Styled.Form>
+      <Collapse in={isAlertVisible}>
+        <TransactionAlert alertType={submitState} />
+      </Collapse>
     </Styled.Container>
   );
 };

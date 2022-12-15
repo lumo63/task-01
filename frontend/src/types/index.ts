@@ -7,3 +7,5 @@ export interface Transaction {
   date: string;
   description: string;
 }
+
+export type SubmitState = "error" | "success";

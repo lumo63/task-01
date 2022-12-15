@@ -10,7 +10,7 @@ import {
   TablePaginationProps,
   TableRow,
 } from "@mui/material";
-import { Transaction } from "types/types";
+import { Transaction } from "types";
 import { useState } from "react";
 
 const Head = (): JSX.Element => {

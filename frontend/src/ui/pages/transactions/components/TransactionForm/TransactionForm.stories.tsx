@@ -1,16 +1,19 @@
-import { ComponentStoryObj } from "@storybook/react";
+import { ComponentMeta, ComponentStoryObj } from "@storybook/react";
 import { TransactionForm } from "./TransactionForm";
 import { userEvent, waitFor, within } from "@storybook/testing-library";
-import { expect } from "@storybook/jest";
+import { expect, jest } from "@storybook/jest";
 
 type StoryType = ComponentStoryObj<typeof TransactionForm>;
 export default {
   component: TransactionForm,
-};
+} as ComponentMeta<typeof TransactionForm>;
 
 export const Default: StoryType = {};
 
 export const UserCanFillTheFormAndSubmit: StoryType = {
+  args: {
+    onFormSubmit: jest.fn(async () => true),
+  },
   play: async (context) => {
     const canvas = within(context.canvasElement);
 
@@ -42,6 +45,7 @@ export const UserCanFillTheFormAndSubmit: StoryType = {
         description: "Irure ut cillum mollit proident voluptate veniam.",
       })
     );
+    await canvas.findByTestId("transactions-alert-success");
   },
 };
 
@@ -125,5 +129,18 @@ export const UserSeeSpacesAreValidated: StoryType = {
     userEvent.click(submitButton);
 
     await waitFor(() => expect(context.args.onFormSubmit).not.toHaveBeenCalled());
+  },
+};
+
+export const UserCanSeeSubmitError: StoryType = {
+  args: {
+    onFormSubmit: jest.fn(async () => false),
+  },
+  play: async (context) => {
+    await UserCanFillTheFormAndSubmit.play?.(context);
+
+    const { findByTestId } = within(context.canvasElement);
+
+    await findByTestId("transactions-alert-error");
   },
 };

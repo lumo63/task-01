@@ -1,5 +1,5 @@
 import { object, string, TypeOf, z } from "zod";
-import { positiveFloatRegex, positiveIntegerRegex } from "consts/regexs";
+import { positiveFloatRegex, positiveIntegerRegex } from "consts/regexps";
 
 export type TransactionSchema = TypeOf<typeof addTransactionSchema>;
 
