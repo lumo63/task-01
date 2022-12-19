@@ -3,7 +3,7 @@ import { Button, TableBody, TableCell, TableRow } from "@mui/material";
 
 export interface TransactionTableBodyProps {
   transactions?: Transaction[];
-  onTransactionDelete: (id: number) => void;
+  onTransactionDelete: (id: number) => Promise<void>;
 }
 export const TransactionTableBody = ({ transactions, onTransactionDelete }: TransactionTableBodyProps): JSX.Element => {
   return (
@@ -19,7 +19,7 @@ export const TransactionTableBody = ({ transactions, onTransactionDelete }: Tran
             <TableCell align="right">{new Date(row.date).toLocaleString("pl-PL")}</TableCell>
             <TableCell align="right">{row.description}</TableCell>
             <TableCell align="right">
-              <Button onClick={() => onTransactionDelete(row.id)}>Delete</Button>
+              <Button onClick={async () => await onTransactionDelete(row.id)}>Delete</Button>
             </TableCell>
           </TableRow>
         ))

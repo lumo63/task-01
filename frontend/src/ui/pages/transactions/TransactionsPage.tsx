@@ -1,4 +1,4 @@
-import { Box, Grid, TableFooter, TablePagination, TablePaginationProps, TableRow } from "@mui/material";
+import { Box, Grid, Snackbar, TableFooter, TablePagination, TablePaginationProps, TableRow } from "@mui/material";
 import { Filter } from "ui/pages/transactions/components/Filter/Filter";
 import { TransactionForm } from "ui/pages/transactions/components/TransactionForm/TransactionForm";
 import { Navbar } from "ui/pages/transactions/components/Navbar/Navbar";
@@ -10,6 +10,7 @@ import { usePostTransaction } from "api/hooks/usePostTransaction";
 import { Transaction } from "types";
 import { TransactionSchema } from "./components/TransactionForm/schema";
 import { common } from "common/common";
+import { useDeleteTransaction } from "api/hooks/useDeleteTransaction";
 
 type onPageChangeHandler = TablePaginationProps["onPageChange"];
 type onRowsPerPageChangeHandler = TablePaginationProps["onRowsPerPageChange"];
@@ -18,9 +19,11 @@ export const TransactionsPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [filterValue, setFilterValue] = useState("");
+  const [isDeleteSnackbarOpen, setIsDeleteSnackbarOpen] = useState(false);
 
-  const { transactions, isLoading, balance } = useTransactions(page, rowsPerPage, filterValue);
+  const { transactions, isLoading, balance, mutate } = useTransactions(page, rowsPerPage, filterValue);
   const { trigger } = usePostTransaction();
+  const deleteCallback = useDeleteTransaction();
   const onPageChangeHandler: onPageChangeHandler = (_, pageNumber) => setPage(pageNumber);
   const onRowsPerPageChangeHandler: onRowsPerPageChangeHandler = (event) => {
     setPage(0);
@@ -42,8 +45,19 @@ export const TransactionsPage = () => {
     return res?.statusText === "Created";
   };
 
-  const onTransactionDelete = (key: number) => {
-    // delete code...
+  const onTransactionDelete = async (id: number) => {
+    const deleteResult = await deleteCallback(id);
+
+    if (deleteResult.statusText === "OK") {
+      const transactionsFiltered = transactions?.filter((t) => t.id !== id);
+
+      await mutate(transactionsFiltered);
+      setIsDeleteSnackbarOpen(true);
+    }
+  };
+
+  const onSnackbarClose = () => {
+    setIsDeleteSnackbarOpen(false);
   };
 
   const onFilterChangeHandler = (filterValue: string) => {
@@ -93,6 +107,13 @@ export const TransactionsPage = () => {
           </Grid>
         </Grid>
       </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={isDeleteSnackbarOpen}
+        onClose={onSnackbarClose}
+        autoHideDuration={5000}
+        message="Transaction deleted"
+      />
     </Box>
   );
 };
