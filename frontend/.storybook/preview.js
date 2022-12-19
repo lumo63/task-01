@@ -1,5 +1,8 @@
 import { SWRConfig } from "swr";
+import { initialize, mswDecorator } from "msw-storybook-addon";
 
+// Initialize MSW
+initialize();
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -16,4 +19,5 @@ export const decorators = [
       <Story />
     </SWRConfig>
   ),
+  mswDecorator,
 ];

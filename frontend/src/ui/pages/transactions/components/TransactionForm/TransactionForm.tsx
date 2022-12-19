@@ -6,13 +6,14 @@ import { Styled } from "./TransactionForm.styles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addTransactionSchema, TransactionSchema } from "./schema";
 import { useEffect, useRef, useState } from "react";
-import { TransactionAlert } from "./components/TransactionAlert";
+import { TransactionAlert } from "./components/TransactionAlert/TransactionAlert";
 import { SubmitState } from "types";
 
 export interface TransactionFormProps {
   onFormSubmit: (formData: TransactionSchema) => Promise<boolean>;
+  isSubmitDisabled: boolean;
 }
-export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Element => {
+export const TransactionForm = ({ onFormSubmit, isSubmitDisabled }: TransactionFormProps): JSX.Element => {
   const [submitState, setSubmitState] = useState<SubmitState>("success");
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
@@ -59,7 +60,9 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
           <TransactionFormTextField name={"address"} label={"Address"} />
           <TransactionFormTextField name={"description"} label={"Description"} />
           <Styled.FormButtonsContainer>
-            <Button onClick={handleSubmit(onSubmitHandler)}>Submit</Button>
+            <Button disabled={isSubmitDisabled} onClick={handleSubmit(onSubmitHandler)}>
+              Submit
+            </Button>
             <Button onClick={() => reset()} variant={"outlined"}>
               Reset
             </Button>

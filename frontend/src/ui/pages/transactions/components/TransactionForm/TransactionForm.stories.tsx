@@ -10,7 +10,7 @@ export default {
 
 export const Default: StoryType = {};
 
-export const UserCanFillTheFormAndSubmit: StoryType = {
+export const UserCanFillTheForm: ComponentStoryObj<any> = {
   args: {
     onFormSubmit: jest.fn(async () => true),
   },
@@ -32,6 +32,16 @@ export const UserCanFillTheFormAndSubmit: StoryType = {
     const descriptionFormField = await canvas.findByLabelText("Description");
 
     userEvent.type(descriptionFormField, "Irure ut cillum mollit proident voluptate veniam.");
+  },
+};
+
+export const UserCanFillTheFormAndSubmit: StoryType = {
+  args: {
+    onFormSubmit: jest.fn(async () => true),
+  },
+  play: async (context) => {
+    await UserCanFillTheForm.play?.(context);
+    const canvas = within(context.canvasElement);
 
     const submitButton = await canvas.findByText("Submit");
 
@@ -47,7 +57,6 @@ export const UserCanFillTheFormAndSubmit: StoryType = {
     );
   },
 };
-
 export const UserCanSeeValidationErrors: StoryType = {
   play: async (context) => {
     const canvas = within(context.canvasElement);

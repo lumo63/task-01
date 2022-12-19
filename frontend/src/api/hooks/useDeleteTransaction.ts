@@ -1,5 +1,5 @@
 import axios from "axios";
-import { transactionsUrl } from "api/common/consts";
+import { transactionsUrl } from "api/transactions/transactions";
 
 const getDeleteUrl = (id: number) => `${transactionsUrl}/${id}`;
 

@@ -1,7 +1,7 @@
 import useSWR from "swr";
-import { transactionsUrl } from "api/common/consts";
 import { Transaction } from "types";
 import axios from "axios";
+import { transactionsUrl } from "api/transactions/transactions";
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
 const fetcher = async (url: string) => await axios.get(url).then((res) => res.data);
