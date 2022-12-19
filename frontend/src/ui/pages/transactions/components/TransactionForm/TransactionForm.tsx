@@ -5,7 +5,7 @@ import { TransactionFormTextField } from "ui/components/FormTextField/FormTextFi
 import { Styled } from "./TransactionForm.styles";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addTransactionSchema, TransactionSchema } from "./schema";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TransactionAlert } from "./components/TransactionAlert";
 import { SubmitState } from "types";
 
@@ -15,6 +15,7 @@ export interface TransactionFormProps {
 export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Element => {
   const [submitState, setSubmitState] = useState<SubmitState>("success");
   const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   const methods = useForm<TransactionSchema>({
     resolver: zodResolver(addTransactionSchema),
@@ -23,6 +24,13 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
 
   const { handleSubmit, reset } = methods;
 
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
   const onSubmitHandler = async (data: TransactionSchema) => {
     const isFormSubmitSuccess = await onFormSubmit(data);
 
@@ -33,7 +41,7 @@ export const TransactionForm = ({ onFormSubmit }: TransactionFormProps): JSX.Ele
       reset();
     }
 
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setIsAlertVisible(false);
     }, 5000);
   };
