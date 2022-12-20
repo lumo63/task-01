@@ -15,12 +15,17 @@ export default {
   parameters: {
     msw: {
       handlers: {
-        defaults: [
+        others: [
           rest.delete(`${transactionsUrl}/*`, (req, res, ctx) => {
             return res(ctx.status(200, "OK"));
           }),
           rest.post(transactionsUrl, (req, res, ctx) => {
             return res(ctx.status(201, "Created"));
+          }),
+        ],
+        getters: [
+          rest.get(transactionsUrl, (req, res, ctx) => {
+            return res(ctx.json([transactionsTableMocks.transactions[0]]));
           }),
         ],
       },
@@ -38,15 +43,6 @@ export default {
 } as ComponentMeta<typeof TransactionsPage>;
 
 export const UserCanFetchTransactions: StoryType = {
-  parameters: {
-    msw: {
-      handlers: {
-        transactions: rest.get(transactionsUrl, (req, res, ctx) => {
-          return res(ctx.json([transactionsTableMocks.transactions[0]]));
-        }),
-      },
-    },
-  },
   play: async (context) => {
     // @ts-expect-error
     await TransactionsAreDisplayedInATableRow.play?.(context);
@@ -57,12 +53,9 @@ export const UserCanAddATransactionThroughTheForm: StoryType = {
   parameters: {
     msw: {
       handlers: {
-        transactions: [
+        getters: [
           rest.get(transactionsUrl, (req, res, ctx) => {
             return res.once(ctx.json([]));
-          }),
-          rest.get(transactionsUrl, (req, res, ctx) => {
-            return res(ctx.json([transactionsTableMocks.transactions[0]]));
           }),
         ],
       },
@@ -80,5 +73,16 @@ export const UserCanAddATransactionThroughTheForm: StoryType = {
     userEvent.click(submitButton);
 
     await canvas.findByText("Transaction has been saved.");
+  },
+};
+
+export const UserCanDeleteATransaction: StoryType = {
+  play: async (context) => {
+    const canvas = within(context.canvasElement);
+
+    const deleteButton = await canvas.findByText("Delete");
+
+    userEvent.click(deleteButton);
+    await canvas.findByText("No transactions have been found");
   },
 };
