@@ -5,9 +5,9 @@ import { transactionsTableMocks } from "./components/TransactionsTable/Transacti
 import { TransactionsAreDisplayedInATableRow } from "./components/TransactionsTable/TransactionsTable.stories";
 import { UserCanFillTheForm } from "./components/TransactionForm/TransactionForm.stories";
 import { userEvent, waitFor, within } from "@storybook/testing-library";
-import { transactionsUrl } from "api/transactions/transactions";
 import { expect } from "@storybook/jest";
 import { useEffect } from "react";
+import { transactionsUrl } from "./hooks/useTransactions";
 
 type StoryType = ComponentStoryObj<typeof TransactionsPage>;
 export default {

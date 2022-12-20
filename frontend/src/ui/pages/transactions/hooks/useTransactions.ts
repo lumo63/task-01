@@ -1,11 +1,10 @@
 /* eslint-disable n/handle-callback-err */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { baseUrl } from "api/common/consts";
-import { transactionsUrl } from "api/transactions/transactions";
+import { baseUrl } from "api/consts";
 import { Transaction } from "types";
 
-const url = `${baseUrl}/transactions`;
+export const transactionsUrl = `${baseUrl}/transactions`;
 const getDeleteUrl = (id: number) => `${transactionsUrl}/${id}`;
 
 export const useTransactions = (page: number, rowsPerPage: number, filterValue: string | undefined) => {
@@ -15,7 +14,7 @@ export const useTransactions = (page: number, rowsPerPage: number, filterValue: 
     queryKey: ["transactions"],
     queryFn: async () =>
       await axios
-        .get<Transaction[]>(url, {
+        .get<Transaction[]>(transactionsUrl, {
           params: {
             _page: page + 1,
             _limit: rowsPerPage,
