@@ -5,12 +5,10 @@ import { Navbar } from "ui/pages/transactions/components/Navbar/Navbar";
 import { Balance } from "ui/pages/transactions/components/Balance/Balance";
 import { TransactionsTable } from "./components/TransactionsTable/TransactionsTable";
 import { useState } from "react";
-import { useTransactions } from "api/hooks/useTransactions";
-import { usePostTransaction } from "api/hooks/usePostTransaction";
 import { Transaction } from "types";
 import { TransactionSchema } from "./components/TransactionForm/schema";
 import { common } from "common/common";
-import { useDeleteTransaction } from "api/hooks/useDeleteTransaction";
+import { useTransactions } from "./hooks/useTransactions";
 
 type onPageChangeHandler = TablePaginationProps["onPageChange"];
 type onRowsPerPageChangeHandler = TablePaginationProps["onRowsPerPageChange"];
@@ -18,12 +16,10 @@ type onRowsPerPageChangeHandler = TablePaginationProps["onRowsPerPageChange"];
 export const TransactionsPage = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
-  const [filterValue, setFilterValue] = useState("");
-  const [isDeleteSnackbarOpen, setIsDeleteSnackbarOpen] = useState(false);
+  const [filterValue, setFilterValue] = useState<string | undefined>(undefined);
+  const [snackbarText, setSnackbarText] = useState<string>("");
 
-  const { transactions, isLoading, balance, mutate } = useTransactions(page, rowsPerPage, filterValue);
-  const { trigger } = usePostTransaction();
-  const deleteCallback = useDeleteTransaction();
+  const { query, balance, deleteMutation, postMutation } = useTransactions(page, rowsPerPage, filterValue);
   const onPageChangeHandler: onPageChangeHandler = (_, pageNumber) => setPage(pageNumber);
   const onRowsPerPageChangeHandler: onRowsPerPageChangeHandler = (event) => {
     setPage(0);
@@ -31,37 +27,39 @@ export const TransactionsPage = () => {
   };
 
   const onFormSubmit = async (data: TransactionSchema) => {
-    const transactionToPost: Transaction = {
-      id: common.getRandomNumber(),
-      amount: Number(data.amount),
-      beneficiary: "Unknown",
-      account: data.account,
-      address: data.address,
-      date: new Date().toISOString(),
-      description: data.description,
-    };
-    const res = await trigger(transactionToPost);
+    try {
+      const transactionToPost: Transaction = {
+        id: common.getRandomNumber(),
+        amount: Number(data.amount),
+        beneficiary: "Unknown",
+        account: data.account,
+        address: data.address,
+        date: new Date().toISOString(),
+        description: data.description,
+      };
 
-    return res?.statusText === "Created";
+      const res = await postMutation.mutateAsync(transactionToPost);
+
+      return res?.statusText === "Created";
+    } catch (e) {
+      return false;
+    }
   };
 
   const onTransactionDelete = async (id: number) => {
-    const deleteResult = await deleteCallback(id);
+    const deleteResult = await deleteMutation.mutateAsync(id);
 
     if (deleteResult.statusText === "OK") {
-      const transactionsFiltered = transactions?.filter((t) => t.id !== id);
-
-      await mutate(transactionsFiltered);
-      setIsDeleteSnackbarOpen(true);
+      setSnackbarText("Transaction deleted");
     }
   };
 
   const onSnackbarClose = () => {
-    setIsDeleteSnackbarOpen(false);
+    setSnackbarText("");
   };
 
   const onFilterChangeHandler = (filterValue: string) => {
-    setFilterValue(filterValue);
+    setFilterValue(filterValue === "" ? undefined : filterValue);
     setPage(0);
   };
 
@@ -74,7 +72,7 @@ export const TransactionsPage = () => {
         <Grid rowSpacing={2} item container>
           <Grid paddingLeft={1} paddingRight={1} spacing={1} direction={"row-reverse"} container item xs={12}>
             <Grid item xs={12} md={8}>
-              <TransactionForm onFormSubmit={onFormSubmit} />
+              <TransactionForm isSubmitDisabled={query.isLoading} onFormSubmit={onFormSubmit} />
             </Grid>
             <Grid spacing={1} container item justifyContent={"space-between"} xs={12} md={4}>
               <Grid item xs={12}>
@@ -87,8 +85,8 @@ export const TransactionsPage = () => {
           </Grid>
           <Grid marginBottom={1} paddingLeft={1} paddingRight={1} item xs={12}>
             <TransactionsTable
-              transactions={transactions}
-              isLoading={isLoading}
+              transactions={query.data}
+              isLoading={query.isLoading}
               onTransactionDelete={onTransactionDelete}
             >
               <TableFooter>
@@ -109,10 +107,10 @@ export const TransactionsPage = () => {
       </Grid>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        open={isDeleteSnackbarOpen}
+        open={!!snackbarText}
         onClose={onSnackbarClose}
         autoHideDuration={5000}
-        message="Transaction deleted"
+        message={snackbarText}
       />
     </Box>
   );

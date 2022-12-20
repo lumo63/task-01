@@ -22,7 +22,7 @@ export const Default: StoryType = {
 
     await canvas.findByTestId("transaction-table-head");
 
-    const rows = await canvas.findAllByTestId("transaction-table-row");
+    const rows = await canvas.findAllByTestId("transaction-table-body-row");
 
     expect(rows).toHaveLength(2);
   },
@@ -46,7 +46,7 @@ export const TransactionsAreDisplayedInATableRow: StoryType = {
 
     const canvas = within(context.canvasElement);
 
-    const row = await canvas.findByTestId("transaction-table-row");
+    const row = await canvas.findByTestId("transaction-table-body-row");
 
     Array.from(row.children).forEach((cell, index) => {
       expect(cell).toHaveTextContent(String(expectedCellValues[index]));

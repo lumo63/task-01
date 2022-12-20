@@ -7,10 +7,10 @@ export interface TransactionTableBodyProps {
 }
 export const TransactionTableBody = ({ transactions, onTransactionDelete }: TransactionTableBodyProps): JSX.Element => {
   return (
-    <TableBody>
+    <TableBody data-testid={"transaction-table-body"}>
       {transactions?.length ? (
         transactions?.map((row) => (
-          <TableRow data-testid={"transaction-table-row"} key={row.date}>
+          <TableRow data-testid={"transaction-table-body-row"} key={row.date}>
             <TableCell align="right">{row.id}</TableCell>
             <TableCell align="right">{row.amount}</TableCell>
             <TableCell align="right">{row.beneficiary}</TableCell>
@@ -26,13 +26,12 @@ export const TransactionTableBody = ({ transactions, onTransactionDelete }: Tran
       ) : (
         <NoDataTableRow />
       )}
-      {}
     </TableBody>
   );
 };
 
 const NoDataTableRow = () => (
   <TableRow>
-    <TableCell colSpan={7}>No transactions have been found</TableCell>
+    <TableCell colSpan={8}>No transactions have been found</TableCell>
   </TableRow>
 );
