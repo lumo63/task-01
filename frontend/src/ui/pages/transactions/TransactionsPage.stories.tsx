@@ -7,10 +7,34 @@ import { UserCanFillTheForm } from "./components/TransactionForm/TransactionForm
 import { userEvent, waitFor, within } from "@storybook/testing-library";
 import { transactionsUrl } from "api/transactions/transactions";
 import { expect } from "@storybook/jest";
+import { useEffect } from "react";
 
 type StoryType = ComponentStoryObj<typeof TransactionsPage>;
 export default {
   component: TransactionsPage,
+  parameters: {
+    msw: {
+      handlers: {
+        defaults: [
+          rest.delete(`${transactionsUrl}/*`, (req, res, ctx) => {
+            return res(ctx.status(200, "OK"));
+          }),
+          rest.post(transactionsUrl, (req, res, ctx) => {
+            return res(ctx.status(201, "Created"));
+          }),
+        ],
+      },
+    },
+  },
+  decorators: [
+    (Story) => {
+      useEffect(() => {
+        return () => window.location.reload();
+      }, []);
+
+      return <Story />;
+    },
+  ],
 } as ComponentMeta<typeof TransactionsPage>;
 
 export const UserCanFetchTransactions: StoryType = {
@@ -34,11 +58,11 @@ export const UserCanAddATransactionThroughTheForm: StoryType = {
     msw: {
       handlers: {
         transactions: [
-          rest.post(transactionsUrl, (req, res, ctx) => {
-            return res(ctx.status(201, "Created"));
+          rest.get(transactionsUrl, (req, res, ctx) => {
+            return res.once(ctx.json([]));
           }),
           rest.get(transactionsUrl, (req, res, ctx) => {
-            return res(ctx.json([]));
+            return res(ctx.json([transactionsTableMocks.transactions[0]]));
           }),
         ],
       },
